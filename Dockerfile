@@ -1,15 +1,15 @@
-FROM node:8-slim
+FROM node:12.8.0-alpine
 
-WORKDIR /starter
-ENV NODE_ENV development
+RUN mkdir /app
+WORKDIR /app
 
-COPY package.json /starter/package.json
+ENV PATH /app/node_modules/.bin:$PATH
 
-RUN npm install --production
+COPY package.json package-lock.json /app/
+RUN npm install
 
-COPY .env.example /starter/.env.example
-COPY . /starter
+# Or if you're using Yarn
+# ADD package.json yarn.lock /app/
+# RUN yarn install
 
-CMD ["npm","start"]
-
-EXPOSE 8080
+COPY . /app/
